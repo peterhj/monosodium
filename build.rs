@@ -104,10 +104,10 @@ fn main() {
 
   eprintln!("TRACE: copy lib");
   let build_lib_path = build_dir.join("src/libsodium/.libs/libsodium.a");
-  let target_lib_path = out_dir.join("libminisodium-native.a");
+  let target_lib_path = out_dir.join("libsodium.a");
   assert!(fs::copy(&build_lib_path, &target_lib_path).is_ok());
   println!("cargo:rustc-link-search=native={}", out_dir.display());
-  println!("cargo:rustc-link-lib=static=minisodium-native");
+  println!("cargo:rustc-link-lib=static=sodium");
 
   eprintln!("TRACE: run bindgen, maybe");
   #[cfg(feature = "fresh")]

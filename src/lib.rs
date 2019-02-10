@@ -72,12 +72,12 @@ pub fn aead_encrypt(cipher_buf: &mut [u8], msg_buf: &[u8], moremsg_buf: &[u8], n
       null(),
       nonce_buf.as_ptr(), key_buf.as_ptr(),
   ) };
+  assert_eq!(cipher_buflen_ret, cipher_buf.len() as u64);
   match ret {
     0 => {}
     -1 => return Err(()),
     _ => panic!(),
   }
-  assert_eq!(cipher_buflen_ret, cipher_buf.len() as u64);
   Ok(())
 }
 
@@ -93,12 +93,12 @@ pub fn aead_decrypt(decrypt_buf: &mut [u8], cipher_buf: &[u8], moremsg_buf: &[u8
       moremsg_buf.as_ptr(), moremsg_buf.len() as u64,
       nonce_buf.as_ptr(), key_buf.as_ptr(),
   ) };
+  assert_eq!(decrypt_buflen_ret, decrypt_buf.len() as u64);
   match ret {
     0 => {}
     -1 => return Err(()),
     _ => panic!(),
   }
-  assert_eq!(decrypt_buflen_ret, decrypt_buf.len() as u64);
   Ok(())
 }
 
