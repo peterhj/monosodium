@@ -1,0 +1,13 @@
+[package]
+name = "minisodium"
+version = "0.1.0"
+edition = "2018"
+authors = ["Peter Jin <peterhaijin@gmail.com>"]
+license = "Apache-2.0 OR MIT"
+
+[features]
+default = []
+fresh = ["bindgen"]
+
+[build-dependencies]
+bindgen = { version = "^0.47", optional = true }
