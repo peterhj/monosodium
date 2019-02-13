@@ -29,11 +29,9 @@ pub const crypto_sign_BYTES: u32 = 64;
 pub const crypto_sign_PUBLICKEYBYTES: u32 = 32;
 pub const crypto_sign_SECRETKEYBYTES: u32 = 64;
 extern "C" {
-    #[link_name = "\u{1}_sodium_init"]
     pub fn sodium_init() -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_aead_xchacha20poly1305_ietf_encrypt"]
     pub fn crypto_aead_xchacha20poly1305_ietf_encrypt(
         c: *mut ::std::os::raw::c_uchar,
         clen_p: *mut ::std::os::raw::c_ulonglong,
@@ -47,7 +45,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_aead_xchacha20poly1305_ietf_decrypt"]
     pub fn crypto_aead_xchacha20poly1305_ietf_decrypt(
         m: *mut ::std::os::raw::c_uchar,
         mlen_p: *mut ::std::os::raw::c_ulonglong,
@@ -61,7 +58,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_aead_xchacha20poly1305_ietf_keygen"]
     pub fn crypto_aead_xchacha20poly1305_ietf_keygen(k: *mut ::std::os::raw::c_uchar);
 }
 #[repr(C)]
@@ -156,7 +152,6 @@ fn bindgen_test_layout_crypto_auth_hmacsha512_state() {
     );
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_auth_hmacsha512256"]
     pub fn crypto_auth_hmacsha512256(
         out: *mut ::std::os::raw::c_uchar,
         in_: *const ::std::os::raw::c_uchar,
@@ -165,7 +160,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_auth_hmacsha512256_verify"]
     pub fn crypto_auth_hmacsha512256_verify(
         h: *const ::std::os::raw::c_uchar,
         in_: *const ::std::os::raw::c_uchar,
@@ -175,7 +169,6 @@ extern "C" {
 }
 pub type crypto_auth_hmacsha512256_state = crypto_auth_hmacsha512_state;
 extern "C" {
-    #[link_name = "\u{1}_crypto_auth_hmacsha512256_init"]
     pub fn crypto_auth_hmacsha512256_init(
         state: *mut crypto_auth_hmacsha512256_state,
         key: *const ::std::os::raw::c_uchar,
@@ -183,7 +176,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_auth_hmacsha512256_update"]
     pub fn crypto_auth_hmacsha512256_update(
         state: *mut crypto_auth_hmacsha512256_state,
         in_: *const ::std::os::raw::c_uchar,
@@ -191,14 +183,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_auth_hmacsha512256_final"]
     pub fn crypto_auth_hmacsha512256_final(
         state: *mut crypto_auth_hmacsha512256_state,
         out: *mut ::std::os::raw::c_uchar,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_auth_hmacsha512256_keygen"]
     pub fn crypto_auth_hmacsha512256_keygen(k: *mut ::std::os::raw::c_uchar);
 }
 #[repr(C)]
@@ -227,11 +217,9 @@ fn bindgen_test_layout_crypto_generichash_blake2b_state() {
 }
 pub type crypto_generichash_state = crypto_generichash_blake2b_state;
 extern "C" {
-    #[link_name = "\u{1}_crypto_generichash_statebytes"]
     pub fn crypto_generichash_statebytes() -> usize;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_generichash"]
     pub fn crypto_generichash(
         out: *mut ::std::os::raw::c_uchar,
         outlen: usize,
@@ -242,7 +230,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_generichash_init"]
     pub fn crypto_generichash_init(
         state: *mut crypto_generichash_state,
         key: *const ::std::os::raw::c_uchar,
@@ -251,7 +238,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_generichash_update"]
     pub fn crypto_generichash_update(
         state: *mut crypto_generichash_state,
         in_: *const ::std::os::raw::c_uchar,
@@ -259,7 +245,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_generichash_final"]
     pub fn crypto_generichash_final(
         state: *mut crypto_generichash_state,
         out: *mut ::std::os::raw::c_uchar,
@@ -267,11 +252,9 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_generichash_keygen"]
     pub fn crypto_generichash_keygen(k: *mut ::std::os::raw::c_uchar);
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_pwhash_str"]
     pub fn crypto_pwhash_str(
         out: *mut ::std::os::raw::c_char,
         passwd: *const ::std::os::raw::c_char,
@@ -281,7 +264,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_pwhash_str_verify"]
     pub fn crypto_pwhash_str_verify(
         str: *const ::std::os::raw::c_char,
         passwd: *const ::std::os::raw::c_char,
@@ -289,7 +271,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_pwhash_str_needs_rehash"]
     pub fn crypto_pwhash_str_needs_rehash(
         str: *const ::std::os::raw::c_char,
         opslimit: ::std::os::raw::c_ulonglong,
@@ -297,14 +278,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_sign_keypair"]
     pub fn crypto_sign_keypair(
         pk: *mut ::std::os::raw::c_uchar,
         sk: *mut ::std::os::raw::c_uchar,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_sign_detached"]
     pub fn crypto_sign_detached(
         sig: *mut ::std::os::raw::c_uchar,
         siglen_p: *mut ::std::os::raw::c_ulonglong,
@@ -314,7 +293,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_crypto_sign_verify_detached"]
     pub fn crypto_sign_verify_detached(
         sig: *const ::std::os::raw::c_uchar,
         m: *const ::std::os::raw::c_uchar,
@@ -323,15 +301,12 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_randombytes_buf"]
     pub fn randombytes_buf(buf: *mut ::std::os::raw::c_void, size: usize);
 }
 extern "C" {
-    #[link_name = "\u{1}_sodium_memzero"]
     pub fn sodium_memzero(pnt: *mut ::std::os::raw::c_void, len: usize);
 }
 extern "C" {
-    #[link_name = "\u{1}_sodium_memcmp"]
     pub fn sodium_memcmp(
         b1_: *const ::std::os::raw::c_void,
         b2_: *const ::std::os::raw::c_void,
@@ -339,7 +314,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_sodium_pad"]
     pub fn sodium_pad(
         padded_buflen_p: *mut usize,
         buf: *mut ::std::os::raw::c_uchar,
@@ -349,7 +323,6 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    #[link_name = "\u{1}_sodium_unpad"]
     pub fn sodium_unpad(
         unpadded_buflen_p: *mut usize,
         buf: *const ::std::os::raw::c_uchar,
