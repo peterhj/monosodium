@@ -12,7 +12,9 @@ impl CryptoBuf {
 
   pub fn zero_bytes(len: usize) -> CryptoBuf {
     let mut buf = Vec::with_capacity(len);
-    unsafe { buf.set_len(len) };
+    for _ in 0 .. len {
+      buf.push(0);
+    }
     assert_eq!(buf.len(), len);
     zero_buf(&mut buf);
     CryptoBuf{buf}
@@ -20,7 +22,9 @@ impl CryptoBuf {
 
   pub fn random_bytes(len: usize) -> CryptoBuf {
     let mut buf = Vec::with_capacity(len);
-    unsafe { buf.set_len(len) };
+    for _ in 0 .. len {
+      buf.push(0);
+    }
     assert_eq!(buf.len(), len);
     random_buf(&mut buf);
     CryptoBuf{buf}
