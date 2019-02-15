@@ -11,6 +11,7 @@ fn gen_bindings(manifest_dir: &PathBuf, build_dir: &PathBuf) {
   bindgen::Builder::default()
     .clang_arg(format!("-I{}", build_dir.join("src/libsodium/include").display()))
     .header("wrapped_sodium.h")
+    .trust_clang_mangling(false)
     .whitelist_recursively(false)
     .whitelist_function("sodium_init")
     .whitelist_function("sodium_memcmp")
