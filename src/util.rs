@@ -1,7 +1,5 @@
 use crate::{eq_bufs, random_buf, zero_buf};
 
-use std::ops::{Deref, DerefMut};
-
 pub struct CryptoBuf {buf: Vec<u8>}
 
 impl CryptoBuf {
@@ -40,20 +38,6 @@ impl AsRef<[u8]> for CryptoBuf {
 impl AsMut<[u8]> for CryptoBuf {
   fn as_mut(&mut self) -> &mut [u8] {
     &mut self.buf
-  }
-}
-
-impl Deref for CryptoBuf {
-  type Target = [u8];
-
-  fn deref(&self) -> &[u8] {
-    self.as_ref()
-  }
-}
-
-impl DerefMut for CryptoBuf {
-  fn deref_mut(&mut self) -> &mut [u8] {
-    self.as_mut()
   }
 }
 

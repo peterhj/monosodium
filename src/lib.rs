@@ -159,10 +159,14 @@ pub fn sign_secret_key_buflen() -> usize {
 pub fn gen_sign_keypair() -> Result<KeyPair, ()> {
   let mut public_key_buf = CryptoBuf::zero_bytes(sign_public_key_buflen());
   let mut secret_key_buf = CryptoBuf::zero_bytes(sign_secret_key_buflen());
-  let ret = unsafe { crypto_sign_keypair(
-      public_key_buf.as_mut_ptr(),
-      secret_key_buf.as_mut_ptr(),
-  ) };
+  let ret = {
+    let p = public_key_buf.as_mut();
+    let s = secret_key_buf.as_mut();
+    unsafe { crypto_sign_keypair(
+      p.as_mut_ptr(),
+      s.as_mut_ptr(),
+    ) }
+  };
   match ret {
     0 => {}
     -1 => return Err(()),
