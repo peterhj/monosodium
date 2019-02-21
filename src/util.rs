@@ -1,6 +1,14 @@
 use crate::{eq_bufs, random_buf, zero_buf};
 
-pub struct CryptoBuf {buf: Vec<u8>}
+pub struct CryptoBuf {
+  buf: Vec<u8>,
+}
+
+impl Drop for CryptoBuf {
+  fn drop(&mut self) {
+    zero_buf(&mut self.buf);
+  }
+}
 
 impl CryptoBuf {
   pub fn from_vec(expected_len: usize, buf: Vec<u8>) -> CryptoBuf {
@@ -9,21 +17,13 @@ impl CryptoBuf {
   }
 
   pub fn zero_bytes(len: usize) -> CryptoBuf {
-    let mut buf = Vec::with_capacity(len);
-    for _ in 0 .. len {
-      buf.push(0);
-    }
-    assert_eq!(buf.len(), len);
+    let mut buf: Vec<u8> = vec![0; len];
     zero_buf(&mut buf);
     CryptoBuf{buf}
   }
 
   pub fn random_bytes(len: usize) -> CryptoBuf {
-    let mut buf = Vec::with_capacity(len);
-    for _ in 0 .. len {
-      buf.push(0);
-    }
-    assert_eq!(buf.len(), len);
+    let mut buf: Vec<u8> = vec![0; len];
     random_buf(&mut buf);
     CryptoBuf{buf}
   }
