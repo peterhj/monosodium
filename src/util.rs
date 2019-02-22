@@ -1,5 +1,10 @@
 use crate::{eq_bufs, random_buf, zero_buf};
 
+pub struct KeyPair {
+  pub public: CryptoBuf,
+  pub secret: CryptoBuf,
+}
+
 pub struct CryptoBuf {
   buf: Vec<u8>,
 }
@@ -27,6 +32,14 @@ impl CryptoBuf {
     random_buf(&mut buf);
     CryptoBuf{buf}
   }
+
+  pub fn into_vec_copy(self) -> Vec<u8> {
+    self.buf.clone()
+  }
+
+  pub fn into_hashbuf_copy(self) -> HashCryptoBuf {
+    HashCryptoBuf{buf: self.buf.clone()}
+  }
 }
 
 impl AsRef<[u8]> for CryptoBuf {
@@ -50,7 +63,40 @@ impl PartialEq for CryptoBuf {
 impl Eq for CryptoBuf {
 }
 
-pub struct KeyPair {
-  pub public: CryptoBuf,
-  pub secret: CryptoBuf,
+#[derive(Hash)]
+pub struct HashCryptoBuf {
+  buf: Vec<u8>,
+}
+
+impl Drop for HashCryptoBuf {
+  fn drop(&mut self) {
+    zero_buf(&mut self.buf);
+  }
+}
+
+impl HashCryptoBuf {
+  pub fn into_vec_copy(self) -> Vec<u8> {
+    self.buf.clone()
+  }
+}
+
+impl AsRef<[u8]> for HashCryptoBuf {
+  fn as_ref(&self) -> &[u8] {
+    &self.buf
+  }
+}
+
+impl AsMut<[u8]> for HashCryptoBuf {
+  fn as_mut(&mut self) -> &mut [u8] {
+    &mut self.buf
+  }
+}
+
+impl PartialEq for HashCryptoBuf {
+  fn eq(&self, other: &HashCryptoBuf) -> bool {
+    eq_bufs(self.as_ref(), other.as_ref())
+  }
+}
+
+impl Eq for HashCryptoBuf {
 }
