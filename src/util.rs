@@ -5,6 +5,7 @@ pub struct KeyPair {
   pub secret: CryptoBuf,
 }
 
+#[derive(Clone)]
 pub struct CryptoBuf {
   buf: Vec<u8>,
 }
@@ -63,7 +64,7 @@ impl PartialEq for CryptoBuf {
 impl Eq for CryptoBuf {
 }
 
-#[derive(Hash)]
+#[derive(Clone, Hash)]
 pub struct HashCryptoBuf {
   buf: Vec<u8>,
 }
