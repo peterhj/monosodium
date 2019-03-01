@@ -34,6 +34,10 @@ impl CryptoBuf {
     CryptoBuf{buf}
   }
 
+  pub fn as_vec(&self) -> &Vec<u8> {
+    &self.buf
+  }
+
   pub fn into_vec_copy(self) -> Vec<u8> {
     self.buf.clone()
   }

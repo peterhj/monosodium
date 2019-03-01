@@ -3,7 +3,7 @@ name = "minisodium"
 version = "0.1.0"
 edition = "2018"
 authors = ["Peter Jin <peterhaijin@gmail.com>"]
-license = "Apache-2.0 OR MIT"
+license = "MIT OR Apache-2.0"
 
 [features]
 default = []
