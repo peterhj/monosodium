@@ -1,5 +1,5 @@
 [package]
-name = "minisodium"
+name = "monosodium"
 version = "0.1.0"
 edition = "2018"
 authors = ["Peter Jin <peterhaijin@gmail.com>"]
