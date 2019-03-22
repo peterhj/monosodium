@@ -1,6 +1,6 @@
 [package]
 name = "monosodium"
-version = "0.1.0"
+version = "0.1.0-pre.0"
 edition = "2018"
 authors = ["Peter Jin <peterhaijin@gmail.com>"]
 license = "MIT OR Apache-2.0"
