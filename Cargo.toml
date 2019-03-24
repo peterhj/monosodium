@@ -8,7 +8,7 @@ description = "Plain bindings to libsodium"
 documentation = "https://docs.rs/monosodium"
 repository = "https://github.com/peterhj/monosodium"
 readme = "README.md"
-keywords = ["sodium"]
+keywords = ["libsodium", "sodium"]
 
 [features]
 default = []
