@@ -28,6 +28,10 @@ pub const crypto_pwhash_MEMLIMIT_SENSITIVE: u32 = 1073741824;
 pub const crypto_sign_BYTES: u32 = 64;
 pub const crypto_sign_PUBLICKEYBYTES: u32 = 32;
 pub const crypto_sign_SECRETKEYBYTES: u32 = 64;
+pub const sodium_base64_VARIANT_ORIGINAL: u32 = 1;
+pub const sodium_base64_VARIANT_ORIGINAL_NO_PADDING: u32 = 3;
+pub const sodium_base64_VARIANT_URLSAFE: u32 = 5;
+pub const sodium_base64_VARIANT_URLSAFE_NO_PADDING: u32 = 7;
 extern "C" {
     pub fn sodium_init() -> ::std::os::raw::c_int;
 }
@@ -192,6 +196,7 @@ extern "C" {
     pub fn crypto_auth_hmacsha512256_keygen(k: *mut ::std::os::raw::c_uchar);
 }
 #[repr(C)]
+#[repr(align(64))]
 pub struct crypto_generichash_blake2b_state {
     pub opaque: [::std::os::raw::c_uchar; 384usize],
 }
@@ -201,6 +206,14 @@ fn bindgen_test_layout_crypto_generichash_blake2b_state() {
         ::std::mem::size_of::<crypto_generichash_blake2b_state>(),
         384usize,
         concat!("Size of: ", stringify!(crypto_generichash_blake2b_state))
+    );
+    assert_eq!(
+        ::std::mem::align_of::<crypto_generichash_blake2b_state>(),
+        64usize,
+        concat!(
+            "Alignment of ",
+            stringify!(crypto_generichash_blake2b_state)
+        )
     );
     assert_eq!(
         unsafe {
@@ -311,6 +324,49 @@ extern "C" {
         b1_: *const ::std::os::raw::c_void,
         b2_: *const ::std::os::raw::c_void,
         len: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn sodium_bin2hex(
+        hex: *mut ::std::os::raw::c_char,
+        hex_maxlen: usize,
+        bin: *const ::std::os::raw::c_uchar,
+        bin_len: usize,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn sodium_hex2bin(
+        bin: *mut ::std::os::raw::c_uchar,
+        bin_maxlen: usize,
+        hex: *const ::std::os::raw::c_char,
+        hex_len: usize,
+        ignore: *const ::std::os::raw::c_char,
+        bin_len: *mut usize,
+        hex_end: *mut *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn sodium_base64_encoded_len(bin_len: usize, variant: ::std::os::raw::c_int) -> usize;
+}
+extern "C" {
+    pub fn sodium_bin2base64(
+        b64: *mut ::std::os::raw::c_char,
+        b64_maxlen: usize,
+        bin: *const ::std::os::raw::c_uchar,
+        bin_len: usize,
+        variant: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char;
+}
+extern "C" {
+    pub fn sodium_base642bin(
+        bin: *mut ::std::os::raw::c_uchar,
+        bin_maxlen: usize,
+        b64: *const ::std::os::raw::c_char,
+        b64_len: usize,
+        ignore: *const ::std::os::raw::c_char,
+        bin_len: *mut usize,
+        b64_end: *mut *const ::std::os::raw::c_char,
+        variant: ::std::os::raw::c_int,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
