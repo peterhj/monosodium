@@ -38,11 +38,11 @@ impl CryptoBuf {
     &self.buf
   }
 
-  pub fn into_vec_copy(self) -> Vec<u8> {
+  pub fn to_vec(&self) -> Vec<u8> {
     self.buf.clone()
   }
 
-  pub fn into_hashbuf_copy(self) -> HashCryptoBuf {
+  pub fn to_hashbuf(&self) -> HashCryptoBuf {
     HashCryptoBuf{buf: self.buf.clone()}
   }
 }
@@ -80,8 +80,21 @@ impl Drop for HashCryptoBuf {
 }
 
 impl HashCryptoBuf {
-  pub fn into_vec_copy(self) -> Vec<u8> {
+  pub fn from_vec(expected_len: usize, buf: Vec<u8>) -> HashCryptoBuf {
+    assert_eq!(expected_len, buf.len());
+    HashCryptoBuf{buf}
+  }
+
+  pub fn as_vec(&self) -> &Vec<u8> {
+    &self.buf
+  }
+
+  pub fn to_vec(&self) -> Vec<u8> {
     self.buf.clone()
+  }
+
+  pub fn to_buf(&self) -> CryptoBuf {
+    CryptoBuf{buf: self.buf.clone()}
   }
 }
 
