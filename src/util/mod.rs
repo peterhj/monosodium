@@ -1,4 +1,14 @@
-use crate::{eq_bufs, random_buf, zero_buf};
+use crate::{
+  eq_bufs, random_buf, zero_buf,
+  base64_decode_config_slice,
+  base64_encode_config_slice_c,
+};
+use crate::ffi::sodium::{sodium_base64_encoded_len};
+use crate::util::base64::{Base64Config};
+
+use std::ffi::{CStr};
+
+pub mod base64;
 
 pub struct KeyPair {
   pub public: CryptoBuf,
@@ -22,6 +32,22 @@ impl CryptoBuf {
     CryptoBuf{buf}
   }
 
+  /*pub fn hex_decode<T: ?Sized + AsRef<[u8]>>(input: &T) -> CryptoBuf {
+    unimplemented!();
+  }*/
+
+  pub fn base64_decode_config<T: ?Sized + AsRef<[u8]>>(input: &T, config: Base64Config) -> Result<CryptoBuf, ()> {
+    let b64_len = input.as_ref().len();
+    let max_bin_len = (b64_len + 3) / 4 * 3;
+    let mut buf = vec![0; max_bin_len];
+    base64_decode_config_slice(input, config, &mut buf)
+      .map(|bin_len| {
+        assert!(bin_len <= max_bin_len);
+        buf.resize(bin_len, 0);
+        CryptoBuf{buf}
+      })
+  }
+
   pub fn zero_bytes(len: usize) -> CryptoBuf {
     let mut buf: Vec<u8> = vec![0; len];
     zero_buf(&mut buf);
@@ -34,6 +60,10 @@ impl CryptoBuf {
     CryptoBuf{buf}
   }
 
+  pub fn len(&self) -> usize {
+    self.buf.len()
+  }
+
   pub fn as_vec(&self) -> &Vec<u8> {
     &self.buf
   }
@@ -44,6 +74,24 @@ impl CryptoBuf {
 
   pub fn to_hashbuf(&self) -> HashCryptoBuf {
     HashCryptoBuf{buf: self.buf.clone()}
+  }
+
+  /*pub fn hex_encode(&self) -> String {
+    unimplemented!();
+  }*/
+
+  pub fn base64_encode_config(&self, config: Base64Config) -> String {
+    let max_enc_len = unsafe { sodium_base64_encoded_len(self.buf.len(), config.to_raw_variant()) };
+    let mut enc_buf = vec![0; max_enc_len];
+    base64_encode_config_slice_c(&self.buf, config, &mut enc_buf);
+    let c_str = unsafe { CStr::from_ptr(enc_buf.as_ptr() as *const i8) };
+    match c_str.to_str() {
+      Err(_) => panic!(),
+      Ok(s) => {
+        assert!(s.len() < max_enc_len);
+        s.to_owned()
+      }
+    }
   }
 }
 
@@ -83,6 +131,10 @@ impl HashCryptoBuf {
   pub fn from_vec(expected_len: usize, buf: Vec<u8>) -> HashCryptoBuf {
     assert_eq!(expected_len, buf.len());
     HashCryptoBuf{buf}
+  }
+
+  pub fn len(&self) -> usize {
+    self.buf.len()
   }
 
   pub fn as_vec(&self) -> &Vec<u8> {

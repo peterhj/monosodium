@@ -1,5 +1,6 @@
 use crate::ffi::sodium::*;
 use crate::util::{CryptoBuf, KeyPair};
+use crate::util::base64::{Base64Config};
 
 use std::ffi::{CStr};
 use std::os::raw::{c_char};
@@ -35,6 +36,35 @@ pub fn eq_bufs(buf: &[u8], other_buf: &[u8]) -> bool {
     -1 => false,
     _ => panic!(),
   }
+}
+
+pub fn base64_decode_config_slice<T: ?Sized + AsRef<[u8]>>(input: &T, config: Base64Config, output: &mut [u8]) -> Result<usize, ()> {
+  let b64 = input.as_ref();
+  let mut bin_len: usize = 0;
+  let ret = unsafe { sodium_base642bin(
+      output.as_mut_ptr(), output.len(),
+      b64.as_ptr() as *const i8, b64.len(),
+      null(),
+      &mut bin_len as *mut usize,
+      null_mut(),
+      config.to_raw_variant(),
+  ) };
+  match ret {
+    0 => {}
+    -1 => return Err(()),
+    _ => panic!(),
+  }
+  assert!(bin_len <= output.len());
+  Ok(bin_len)
+}
+
+pub fn base64_encode_config_slice_c<T: ?Sized + AsRef<[u8]>>(input: &T, config: Base64Config, output: &mut [u8]) {
+  let bin = input.as_ref();
+  unsafe { sodium_bin2base64(
+      output.as_mut_ptr() as *mut i8, output.len(),
+      bin.as_ptr(), bin.len(),
+      config.to_raw_variant(),
+  ) };
 }
 
 pub fn aead_key_buflen() -> usize {
