@@ -2,7 +2,6 @@ use crate::ffi::sodium::*;
 use crate::util::{CryptoBuf, KeyPair};
 use crate::util::base64::{Base64Config};
 
-use std::ffi::{CStr};
 use std::os::raw::{c_char};
 use std::ptr::{null, null_mut};
 
@@ -282,11 +281,11 @@ pub fn pwhash_str_prefix() -> &'static [u8] {
   crypto_pwhash_STRPREFIX
 }
 
-pub fn pwhash_str(str_buf: &mut [u8], passwd: &CStr, ops_limit: u64, mem_limit: usize) -> Result<(), ()> {
+pub fn pwhash_str(str_buf: &mut [u8], passwd_buf: &[u8], ops_limit: u64, mem_limit: usize) -> Result<(), ()> {
   assert_eq!(str_buf.len(), pwhash_str_buflen());
   let ret = unsafe { crypto_pwhash_str(
       str_buf.as_mut_ptr() as *mut c_char,
-      passwd.as_ptr(), passwd.to_bytes().len() as u64,
+      passwd_buf.as_ptr() as *const c_char, passwd_buf.len() as u64,
       ops_limit,
       mem_limit,
   ) };
@@ -298,11 +297,11 @@ pub fn pwhash_str(str_buf: &mut [u8], passwd: &CStr, ops_limit: u64, mem_limit: 
   Ok(())
 }
 
-pub fn pwhash_str_verify(str_buf: &[u8], passwd: &CStr) -> Result<(), ()> {
+pub fn pwhash_str_verify(str_buf: &[u8], passwd_buf: &[u8]) -> Result<(), ()> {
   assert_eq!(str_buf.len(), pwhash_str_buflen());
   let ret = unsafe { crypto_pwhash_str_verify(
       str_buf.as_ptr() as *const c_char,
-      passwd.as_ptr(), passwd.to_bytes().len() as u64,
+      passwd_buf.as_ptr() as *const c_char, passwd_buf.len() as u64,
   ) };
   match ret {
     0 => {}
