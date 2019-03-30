@@ -56,6 +56,18 @@ pub fn partial_cmp_bufs(buf: &[u8], other_buf: &[u8]) -> Option<Ordering> {
   }
 }
 
+pub fn is_zero_buf(buf: &[u8]) -> bool {
+  let ret = unsafe { sodium_is_zero(
+      buf.as_ptr(),
+      buf.len(),
+  ) };
+  match ret {
+    0 => false,
+    1 => true,
+    _ => panic!(),
+  }
+}
+
 pub fn base64_decode_config_slice<T: ?Sized + AsRef<[u8]>>(input: &T, config: Base64Config, output: &mut [u8]) -> Result<usize, ()> {
   let b64 = input.as_ref();
   let mut bin_len: usize = 0;

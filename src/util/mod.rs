@@ -1,5 +1,6 @@
 use crate::{
-  eq_bufs, partial_cmp_bufs, random_buf, zero_buf,
+  random_buf, zero_buf,
+  eq_bufs, partial_cmp_bufs, is_zero_buf,
   base64_decode_config_slice,
   base64_encode_config_slice_c,
 };
@@ -59,6 +60,10 @@ impl CryptoBuf {
     let mut buf: Vec<u8> = vec![0; len];
     random_buf(&mut buf);
     CryptoBuf{buf}
+  }
+
+  pub fn is_zero(&self) -> bool {
+    is_zero_buf(&self.buf)
   }
 
   pub fn len(&self) -> usize {
@@ -147,6 +152,10 @@ impl HashCryptoBuf {
   pub fn from_vec(expected_len: usize, buf: Vec<u8>) -> HashCryptoBuf {
     assert_eq!(expected_len, buf.len());
     HashCryptoBuf{buf}
+  }
+
+  pub fn is_zero(&self) -> bool {
+    is_zero_buf(&self.buf)
   }
 
   pub fn len(&self) -> usize {
