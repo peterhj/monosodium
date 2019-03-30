@@ -2,6 +2,7 @@ use crate::ffi::sodium::*;
 use crate::util::{CryptoBuf, KeyPair};
 use crate::util::base64::{Base64Config};
 
+use std::cmp::{Ordering};
 use std::os::raw::{c_char};
 use std::ptr::{null, null_mut};
 
@@ -33,6 +34,24 @@ pub fn eq_bufs(buf: &[u8], other_buf: &[u8]) -> bool {
   match ret {
     0 => true,
     -1 => false,
+    _ => panic!(),
+  }
+}
+
+pub fn partial_cmp_bufs(buf: &[u8], other_buf: &[u8]) -> Option<Ordering> {
+  if buf.len() != other_buf.len() {
+    return None;
+  }
+  assert_eq!(buf.len(), other_buf.len());
+  let ret = unsafe { sodium_compare(
+      buf.as_ptr() as *const _,
+      other_buf.as_ptr() as *const _,
+      buf.len(),
+  ) };
+  match ret {
+    -1 => Some(Ordering::Less),
+    0 => Some(Ordering::Equal),
+    1 => Some(Ordering::Greater),
     _ => panic!(),
   }
 }

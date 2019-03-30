@@ -15,6 +15,8 @@ fn gen_bindings(manifest_dir: &PathBuf, build_dir: &PathBuf) {
     .whitelist_recursively(false)
     .whitelist_function("sodium_init")
     .whitelist_function("sodium_memcmp")
+    .whitelist_function("sodium_compare")
+    .whitelist_function("sodium_is_zero")
     .whitelist_function("sodium_pad")
     .whitelist_function("sodium_unpad")
     .whitelist_function("sodium_memzero")

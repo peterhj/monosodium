@@ -1,11 +1,12 @@
 use crate::{
-  eq_bufs, random_buf, zero_buf,
+  eq_bufs, partial_cmp_bufs, random_buf, zero_buf,
   base64_decode_config_slice,
   base64_encode_config_slice_c,
 };
 use crate::ffi::sodium::{sodium_base64_encoded_len};
 use crate::util::base64::{Base64Config};
 
+use std::cmp::{Ordering};
 use std::ffi::{CStr};
 
 pub mod base64;
@@ -116,6 +117,21 @@ impl PartialEq for CryptoBuf {
 impl Eq for CryptoBuf {
 }
 
+impl PartialOrd for CryptoBuf {
+  fn partial_cmp(&self, other: &CryptoBuf) -> Option<Ordering> {
+    Some(self.cmp(other))
+  }
+}
+
+impl Ord for CryptoBuf {
+  fn cmp(&self, other: &CryptoBuf) -> Ordering {
+    match partial_cmp_bufs(self.as_ref(), other.as_ref()) {
+      None => unreachable!(),
+      Some(res) => res,
+    }
+  }
+}
+
 #[derive(Clone, Hash)]
 pub struct HashCryptoBuf {
   buf: Vec<u8>,
@@ -169,4 +185,19 @@ impl PartialEq for HashCryptoBuf {
 }
 
 impl Eq for HashCryptoBuf {
+}
+
+impl PartialOrd for HashCryptoBuf {
+  fn partial_cmp(&self, other: &HashCryptoBuf) -> Option<Ordering> {
+    Some(self.cmp(other))
+  }
+}
+
+impl Ord for HashCryptoBuf {
+  fn cmp(&self, other: &HashCryptoBuf) -> Ordering {
+    match partial_cmp_bufs(self.as_ref(), other.as_ref()) {
+      None => unreachable!(),
+      Some(res) => res,
+    }
+  }
 }

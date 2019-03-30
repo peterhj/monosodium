@@ -327,6 +327,16 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn sodium_compare(
+        b1_: *const ::std::os::raw::c_uchar,
+        b2_: *const ::std::os::raw::c_uchar,
+        len: usize,
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn sodium_is_zero(n: *const ::std::os::raw::c_uchar, nlen: usize) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn sodium_bin2hex(
         hex: *mut ::std::os::raw::c_char,
         hex_maxlen: usize,
