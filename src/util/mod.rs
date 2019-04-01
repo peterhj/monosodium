@@ -124,16 +124,7 @@ impl Eq for CryptoBuf {
 
 impl PartialOrd for CryptoBuf {
   fn partial_cmp(&self, other: &CryptoBuf) -> Option<Ordering> {
-    Some(self.cmp(other))
-  }
-}
-
-impl Ord for CryptoBuf {
-  fn cmp(&self, other: &CryptoBuf) -> Ordering {
-    match partial_cmp_bufs(self.as_ref(), other.as_ref()) {
-      None => unreachable!(),
-      Some(res) => res,
-    }
+    partial_cmp_bufs(self.as_ref(), other.as_ref())
   }
 }
 
@@ -198,15 +189,6 @@ impl Eq for HashCryptoBuf {
 
 impl PartialOrd for HashCryptoBuf {
   fn partial_cmp(&self, other: &HashCryptoBuf) -> Option<Ordering> {
-    Some(self.cmp(other))
-  }
-}
-
-impl Ord for HashCryptoBuf {
-  fn cmp(&self, other: &HashCryptoBuf) -> Ordering {
-    match partial_cmp_bufs(self.as_ref(), other.as_ref()) {
-      None => unreachable!(),
-      Some(res) => res,
-    }
+    partial_cmp_bufs(self.as_ref(), other.as_ref())
   }
 }
