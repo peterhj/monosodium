@@ -68,6 +68,33 @@ pub fn is_zero_buf(buf: &[u8]) -> bool {
   }
 }
 
+pub fn hex_decode_slice<T: ?Sized + AsRef<[u8]>>(input: &T, output: &mut [u8]) -> Result<usize, ()> {
+  let hex = input.as_ref();
+  let mut bin_len: usize = 0;
+  let ret = unsafe { sodium_hex2bin(
+      output.as_mut_ptr(), output.len(),
+      hex.as_ptr() as *const i8, hex.len(),
+      null(),
+      &mut bin_len as *mut usize,
+      null_mut(),
+  ) };
+  match ret {
+    0 => {}
+    -1 => return Err(()),
+    _ => panic!(),
+  }
+  assert!(bin_len <= output.len());
+  Ok(bin_len)
+}
+
+pub fn hex_encode_slice_c<T: ?Sized + AsRef<[u8]>>(input: &T, output: &mut [u8]) {
+  let bin = input.as_ref();
+  unsafe { sodium_bin2hex(
+      output.as_mut_ptr() as *mut i8, output.len(),
+      bin.as_ptr(), bin.len(),
+  ) };
+}
+
 pub fn base64_decode_config_slice<T: ?Sized + AsRef<[u8]>>(input: &T, config: Base64Config, output: &mut [u8]) -> Result<usize, ()> {
   let b64 = input.as_ref();
   let mut bin_len: usize = 0;
