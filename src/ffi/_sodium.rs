@@ -197,6 +197,7 @@ extern "C" {
 }
 #[repr(C)]
 #[repr(align(64))]
+#[derive(Copy, Clone)]
 pub struct crypto_generichash_blake2b_state {
     pub opaque: [::std::os::raw::c_uchar; 384usize],
 }

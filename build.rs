@@ -98,10 +98,10 @@ fn main() {
   let manifest_dir = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap());
   let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-  let build_dir = out_dir.join("libsodium-1.0.17");
+  let build_dir = out_dir.join("libsodium-1.0.18");
 
   println!("cargo:rerun-if-changed=build.rs");
-  println!("cargo:rerun-if-changed=libsodium-1.0.17.tar.gz");
+  println!("cargo:rerun-if-changed=libsodium-1.0.18.tar.gz");
 
   eprintln!("TRACE: clean dirs");
   fs::remove_dir_all(&build_dir).ok();
@@ -110,7 +110,7 @@ fn main() {
   let mut proc = Command::new("tar")
     .current_dir(&out_dir)
     .arg("-xzkf")
-    .arg(format!("{}", manifest_dir.join("libsodium-1.0.17.tar.gz").display()))
+    .arg(format!("{}", manifest_dir.join("libsodium-1.0.18.tar.gz").display()))
     .stdout(Stdio::null())
     .stderr(Stdio::null())
     .spawn().unwrap();
