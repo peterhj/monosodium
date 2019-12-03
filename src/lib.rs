@@ -247,8 +247,8 @@ pub fn gen_sign_keypair() -> Result<KeyPair, ()> {
   let mut public_key_buf = CryptoBuf::zero_bytes(sign_public_key_buflen());
   let mut secret_key_buf = CryptoBuf::zero_bytes(sign_secret_key_buflen());
   let ret = {
-    let p = public_key_buf.as_mut();
-    let s = secret_key_buf.as_mut();
+    let mut p = public_key_buf.borrow_mut();
+    let mut s = secret_key_buf.borrow_mut();
     unsafe { crypto_sign_keypair(
       p.as_mut_ptr(),
       s.as_mut_ptr(),
