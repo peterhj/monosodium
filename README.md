@@ -18,6 +18,12 @@ zeroing its inner `Vec<u8>` buffer (using `sodium_memzero`), and has
 constructors that initialize its inner buffer with zero-valued bytes or random
 bytes (using `randombytes_buf`).
 
+### CryptoSlice and CryptoSliceMut
+
+`util::CryptoBuf` has functions `borrow` and `borrow_mut` that return slice-like
+wrapper types. These implement higher-level APIs, rather than the lower-level
+APIs in the crate top-level based on byte slices.
+
 ### HashCryptoBuf
 
 There is a related struct, `util::HashCryptoBuf`, that additionally implements
